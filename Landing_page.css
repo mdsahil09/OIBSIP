@@ -1,0 +1,50 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
+    font-size: large;
+    margin: 0;
+    padding: 50px;
+    background-image: url("about-health-medical-medicine.jpg");
+    background-size: cover;
+}
+
+h1{
+    word-spacing: 30px;
+}
+
+header {
+  
+    color:darkslategrey;
+    padding: 1rem;
+    text-align: center;
+    
+}
+header:hover{
+    color:black;
+}
+nav ul {
+    list-style: armenian;
+    margin: 0;
+    padding: 0;
+}
+nav li {
+    display: inline-block;
+    margin-right: 20px;
+    color: blueviolet;
+}
+li :hover{
+color: black;
+
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+   
+    color : rgb(0, 47, 255);
+    margin-top: 700px;
+   
+    text-align: center;
+    padding: 1rem;
+}
