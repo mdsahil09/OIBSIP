@@ -1,0 +1,85 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("ocean-3605547_640.jpg");
+    background-size: cover;
+
+  
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    padding: 70px 0;
+    color: aliceblue;
+}
+
+  
+  
+a:link {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: darkkhaki;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+  
+  a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+header img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: white;
+   
+}
+
+header p {
+    color: whitesmoke;
+ 
+   
+    
+}
+
+section {
+    padding: 50px 0;
+    color: white;
+   
+}
+
+section h2 {
+    margin-bottom: 20px;
+  
+}
+
+project img {
+    max-width: 100%;
+    border-radius: 10px;
+   
+
+
+}
+
+
