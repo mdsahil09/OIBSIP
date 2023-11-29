@@ -1,0 +1,182 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class User {
+    private String username;
+    private String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public boolean authenticate(String enteredUsername, String enteredPassword) {
+        return username.equals(enteredUsername) && password.equals(enteredPassword);
+    }
+
+    public void updateProfile(String newUsername, String newPassword) {
+        username = newUsername;
+        password = newPassword;
+        System.out.println("Profile updated successfully!");
+    }
+}
+
+class Question {
+    private String questionText;
+    private ArrayList<String> options;
+    private int correctOption;
+
+    public Question(String questionText, ArrayList<String> options, int correctOption) {
+        this.questionText = questionText;
+        this.options = options;
+        this.correctOption = correctOption;
+    }
+
+    public void displayQuestion() {
+        System.out.println(questionText);
+        for (int i = 0; i < options.size(); i++) {
+            System.out.println((i + 1) + ". " + options.get(i));
+        }
+    }
+
+    public boolean isCorrect(int userAnswer) {
+        return userAnswer == correctOption;
+    }
+}
+
+class Timer {
+    private int seconds;
+
+    public Timer(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public void startTimer() {
+        while (seconds > 0) {
+            System.out.println("Time left: " + seconds + " seconds");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            seconds--;
+        }
+    }
+}
+
+class Quiz {
+    private ArrayList<Question> questions;
+    private int totalTime;
+    private int userScore;
+
+    public Quiz(ArrayList<Question> questions, int totalTime) {
+        this.questions = questions;
+        this.totalTime = totalTime;
+    }
+
+    public void startQuiz() {
+        Timer timer = new Timer(totalTime);
+        Thread timerThread = new Thread(timer::startTimer);
+        timerThread.start();
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (Question question : questions) {
+            question.displayQuestion();
+            System.out.print("Enter your answer (1-" + question.getOptions().size() + "): ");
+            int userAnswer = scanner.nextInt();
+
+            if (question.isCorrect(userAnswer)) {
+                System.out.println("Correct!");
+                userScore++;
+            } else {
+                System.out.println("Incorrect!");
+            }
+        }
+
+        System.out.println("\nQuiz completed!");
+        System.out.println("Your score: " + userScore + "/" + questions.size());
+    }
+}
+
+class QuizSystem {
+    private User currentUser;
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter your password: ");
+        String password = scanner.nextLine();
+
+        // Creating a sample user
+        User user = new User("mdsahil", "password123");
+
+        // Authenticating the user
+        if (user.authenticate(username, password)) {
+            currentUser = user;
+            showMenu(scanner);
+        } else {
+            System.out.println("Invalid credentials. Exiting...");
+        }
+    }
+
+    private void showMenu(Scanner scanner) {
+        while (true) {
+            System.out.println("\n------ Quiz System Menu ------");
+            System.out.println("1. Update Profile and Password");
+            System.out.println("2. Start Quiz");
+            System.out.println("3. Close Session and Logout");
+
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    updateProfileAndPassword(scanner);
+                    break;
+                case 2:
+                    startQuiz(scanner);
+                    break;
+                case 3:
+                    System.out.println("Closing session and logging out. Goodbye!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private void updateProfileAndPassword(Scanner scanner) {
+        System.out.print("Enter new username: ");
+        String newUsername = scanner.next();
+
+        System.out.print("Enter new password: ");
+        String newPassword = scanner.next();
+
+        currentUser.updateProfile(newUsername, newPassword);
+    }
+
+    private void startQuiz(Scanner scanner) {
+        ArrayList<Question> questions = new ArrayList<>();
+        questions.add(new Question("What is the capital of France?", new ArrayList<>(List.of("Berlin", "Paris", "London")), 2));
+        questions.add(new Question("What is the largest planet in our solar system?", new ArrayList<>(List.of("Mars", "Jupiter", "Venus")), 2));
+        questions.add(new Question("Who wrote 'Romeo and Juliet'?", new ArrayList<>(List.of("Charles Dickens", "William Shakespeare", "Jane Austen")), 2));
+
+        System.out.print("Enter quiz time (in seconds): ");
+        int quizTime = scanner.nextInt();
+
+        Quiz quiz = new Quiz(questions, quizTime);
+        quiz.startQuiz();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Quiz System - Code written by Md Sahil Firoze");
+        QuizSystem quizSystem = new QuizSystem();
+        quizSystem.start();
+    }
+}
