@@ -1,0 +1,151 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Transaction {
+    private String type;
+    private double amount;
+
+    public Transaction(String type, double amount) {
+        this.type = type;
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return type + ": $" + amount;
+    }
+}
+
+class User {
+    private String userId;
+    private String userPin;
+    private double balance;
+    private ArrayList<Transaction> transactionHistory;
+
+    public User(String userId, String userPin, double initialBalance) {
+        this.userId = userId;
+        this.userPin = userPin;
+        this.balance = initialBalance;
+        this.transactionHistory = new ArrayList<>();
+    }
+
+    public boolean authenticate(String enteredUserId, String enteredUserPin) {
+        return userId.equals(enteredUserId) && userPin.equals(enteredUserPin);
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+        transactionHistory.add(new Transaction("Deposit", amount));
+    }
+
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            transactionHistory.add(new Transaction("Withdrawal", amount));
+        } else {
+            System.out.println("Insufficient funds!");
+        }
+    }
+
+    public void transfer(User recipient, double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            recipient.deposit(amount);
+            transactionHistory.add(new Transaction("Transfer to " + recipient.userId, amount));
+        } else {
+            System.out.println("Insufficient funds for the transfer!");
+        }
+    }
+
+    public void displayTransactionHistory() {
+        System.out.println("\n------ Transaction History ------");
+        for (Transaction transaction : transactionHistory) {
+            System.out.println(transaction);
+        }
+    }
+}
+
+class ATMSystem {
+    private User currentUser;
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter User ID: ");
+        String userId = scanner.nextLine();
+
+        System.out.print("Enter User PIN: ");
+        String userPin = scanner.nextLine();
+
+        // Creating a sample user
+        User user = new User("mdsahil", "1234", 1000.0);
+
+        // Authenticating the user
+        if (user.authenticate(userId, userPin)) {
+            currentUser = user;
+            showMenu(scanner);
+        } else {
+            System.out.println("Invalid credentials. Exiting...");
+        }
+    }
+
+    private void showMenu(Scanner scanner) {
+        while (true) {
+            System.out.println("\n------ ATM Menu ------");
+            System.out.println("1. View Balance");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Transfer");
+            System.out.println("5. View Transaction History");
+            System.out.println("6. Quit");
+
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Current Balance: $" + currentUser.getBalance());
+                    break;
+                case 2:
+                    System.out.print("Enter deposit amount: $");
+                    double depositAmount = scanner.nextDouble();
+                    currentUser.deposit(depositAmount);
+                    System.out.println("Deposit successful!");
+                    break;
+                case 3:
+                    System.out.print("Enter withdrawal amount: $");
+                    double withdrawalAmount = scanner.nextDouble();
+                    currentUser.withdraw(withdrawalAmount);
+                    break;
+                case 4:
+                    System.out.print("Enter recipient's User ID: ");
+                    String recipientUserId = scanner.next();
+                    User recipient = new User("recipient", "5678", 0.0); // Sample recipient user
+                    System.out.print("Enter transfer amount: $");
+                    double transferAmount = scanner.nextDouble();
+                    currentUser.transfer(recipient, transferAmount);
+                    break;
+                case 5:
+                    currentUser.displayTransactionHistory();
+                    break;
+                case 6:
+                    System.out.println("Thank you for using the ATM. Exiting...");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("ATM System - Contributed by Md Sahil Firoze");
+        ATMSystem atmSystem = new ATMSystem();
+        atmSystem.start();
+    }
+}
