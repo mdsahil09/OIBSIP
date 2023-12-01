@@ -1,0 +1,44 @@
+def calculate_bmi(weight, height):
+    try:
+        bmi = weight / (height ** 2)
+        return bmi
+    except ZeroDivisionError:
+        return None
+
+def classify_bmi(bmi):
+    if bmi is None:
+        return "Error: Height should be greater than zero."
+    elif bmi < 18.5:
+        return "Underweight"
+    elif 18.5 <= bmi < 25:
+        return "Normal weight"
+    elif 25 <= bmi < 30:
+        return "Overweight"
+    else:
+        return "Obese"
+
+def get_user_input():
+    try:
+        weight = float(input("Enter your weight in kilograms: "))
+        height = float(input("Enter your height in meters: "))
+        return weight, height
+    except ValueError:
+        return None
+
+def main():
+    user_input = get_user_input()
+
+    if user_input:
+        weight, height = user_input
+
+        bmi = calculate_bmi(weight, height)
+        category = classify_bmi(bmi)
+
+        print("\nBMI Result:")
+        print(f"Your BMI: {bmi:.2f}")
+        print(f"Category: {category}")
+
+if __name__ == "__main__":
+    print("Code contributed by Md Sahil Firoze")
+    main()
+
